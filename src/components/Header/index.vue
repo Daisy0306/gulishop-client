@@ -65,7 +65,7 @@ export default {
           keyword: this.keyword.toUpperCase(),
         },
       };
-      this.$router.push(location).catch(() => {});
+      this.$router.push(location);
     },
   },
 };
