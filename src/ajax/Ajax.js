@@ -20,7 +20,7 @@ const instance = axios.create({
     // 配置请求基础路径
     baseURL: '/api',
     // 配置请求超时时间
-    timeout: 200,
+    timeout: 15000,
 });
 
 // 请求和响应拦截器

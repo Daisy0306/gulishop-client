@@ -4,6 +4,8 @@ import App from "@/App";
 import router from "@/router";
 import TopNav from "@/components/TopNav";
 
+import "@/api"; // 为了测试用的
+
 Vue.config.productionTip = false;
 // 注册全局组件
 Vue.component("TopNav", TopNav);

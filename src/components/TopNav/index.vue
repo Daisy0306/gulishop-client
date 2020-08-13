@@ -1692,8 +1692,16 @@
 </template>
 
 <script>
+//import { mapState, mapGetters } from "vuex";
 export default {
   name: "TopNav",
+  mounted() {
+    // this.$store.dispath("getCategoryList");
+    this.getCategoryList();
+  },
+  methods: {
+    getCategoryList() {},
+  },
 };
 </script>
 
