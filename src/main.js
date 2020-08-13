@@ -3,6 +3,7 @@ import Vue from "vue";
 import App from "@/App";
 import router from "@/router";
 import TopNav from "@/components/TopNav";
+import store from "@/store";
 
 import "@/api"; // 为了测试用的
 
@@ -14,4 +15,5 @@ new Vue({
   router,
   el: "#app",
   render: (h) => h(App),
+  store
 });

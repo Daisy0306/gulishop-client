@@ -1692,7 +1692,7 @@
 </template>
 
 <script>
-//import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "TopNav",
   mounted() {
@@ -1700,7 +1700,19 @@ export default {
     this.getCategoryList();
   },
   methods: {
-    getCategoryList() {},
+    getCategoryList() {
+      this.$store.dispatch("getCategoryList");
+    },
+  },
+  computed: {
+    // ...mapState(['categoryList']) //错的  之前是对的
+    // state.categoryList
+    // state.home.categoryList
+    // ...mapState() 展开的是调用mapState函数的返回值
+    ...mapState({
+      categoryList: (state) => state.home.categoryList,
+    }),
+    //...mapGetters(["categoryList1"]),
   },
 };
 </script>
