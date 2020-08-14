@@ -158,7 +158,7 @@ export default {
 
                 dd {
                   float: left;
-                  width: 415px;
+                  width: 666px;
                   padding: 3px 0 0;
                   overflow: hidden;
 
@@ -176,6 +176,7 @@ export default {
           }
 
           &:hover {
+            background-color: #ccc;
             .item-list {
               display: block;
             }
