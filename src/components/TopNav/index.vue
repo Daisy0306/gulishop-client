@@ -240,6 +240,17 @@ export default {
       position: absolute;
       background: #ddd;
       z-index: 999;
+      &.show-enter {
+        opacity: 0;
+        height: 0;
+      }
+      &.show-enter-to {
+        opacity: 1;
+        height: 461px;
+      }
+      &.show-enter-active {
+        transition: all 600ms;
+      }
 
       .all-sort-list2 {
         .item {
