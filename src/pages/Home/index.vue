@@ -7,7 +7,7 @@
     <Like />
     <Floor />
     <Floor />
-    <Brand/>
+    <Brand />
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
     Rank,
     Like,
     Floor,
-    Brand
+    Brand,
   },
 };
 </script>

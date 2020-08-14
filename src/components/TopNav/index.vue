@@ -3,89 +3,91 @@
     <div class="container">
       <div @mouseleave="currentIndex = -1">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2" @click="toSearch">
-            <div
-              class="item"
-              :class="{item_on:currentIndex===index}"
-              @mouseenter="moveIn(index)"
-              v-for="(c1,index) in categoryList"
-              :key="c1.categoryId"
-            >
-              <h3>
-                <!-- <a href>{{c1.categoryName}}</a> -->
-                <!-- 方案1：修改为声明式导航 -->
-                <!-- <router-link
-                  to="{name:'search,query:{categoryName:c1.categoryName,category1Id:c1.categoryId}}"
-                >{{c1.categoryName}}</router-link>-->
+        <transition name="show">
+          <div class="sort" v-show="isShow">
+            <div class="all-sort-list2" @click="toSearch">
+              <div
+                class="item"
+                :class="{item_on:currentIndex===index}"
+                @mouseenter="moveIn(index)"
+                v-for="(c1,index) in categoryList"
+                :key="c1.categoryId"
+              >
+                <h3>
+                  <!-- <a href>{{c1.categoryName}}</a> -->
+                  <!-- 方案1：修改为声明式导航 -->
+                  <!-- <router-link
+                    to="{name:'search,query:{categoryName:c1.categoryName,category1Id:c1.categoryId}}"
+                  >{{c1.categoryName}}</router-link>-->
 
-                <!-- 方案2：编程式导航 -->
-                <!-- <a
-                  href="javascript:;"
-                  @click="$router.push({name:'search',query:{categoryName:c1.categoryName,category1Id:c1.categoryId}})"
-                >{{c1.categoryName}}</a>-->
+                  <!-- 方案2：编程式导航 -->
+                  <!-- <a
+                    href="javascript:;"
+                    @click="$router.push({name:'search',query:{categoryName:c1.categoryName,category1Id:c1.categoryId}})"
+                  >{{c1.categoryName}}</a>-->
 
-                <!-- 方案3：事件委派 -->
-                <a
-                  href="javascript:;"
-                  :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.categoryId"
-                >{{c1.categoryName}}</a>
-              </h3>
-              <div class="item-list clearfix">
-                <div class="subitem">
-                  <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
-                    <dt>
-                      <!-- <a href>{{c2.categoryName}}</a> -->
-                      <!-- 方案1：修改为声明式导航 -->
-                      <!-- <router-link
-                        to="{name:'search,query:{categoryName:c2.categoryName,category2Id:c2.categoryId}}"
-                      >{{c2.categoryName}}</router-link>-->
-
-                      <!-- 方案2：编程式导航 -->
-                      <!-- <a
-                        href="javascript:;"
-                        @click="$router.push({name:'search',query:{categoryName:c2.categoryName,category2Id:c2.categoryId}})"
-                      >{{c2.categoryName}}</a>-->
-
-                      <!-- 方案3：事件委派 -->
-                      <a
-                        href="javascript:;"
-                        :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.categoryId"
-                      >{{c2.categoryName}}</a>
-                    </dt>
-                    <dd>
-                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <!-- <a href>{{c3.categoryName}}</a> -->
-                        <!-- 方案1：修改为声明式导航，发现页面会卡顿，在鼠标在菜单栏上移动的时候
-                        【每次创建一个标签都会创建一个新的对象，创建的太多就造成页面卡顿】-->
+                  <!-- 方案3：事件委派 -->
+                  <a
+                    href="javascript:;"
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                  >{{c1.categoryName}}</a>
+                </h3>
+                <div class="item-list clearfix">
+                  <div class="subitem">
+                    <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
+                      <dt>
+                        <!-- <a href>{{c2.categoryName}}</a> -->
+                        <!-- 方案1：修改为声明式导航 -->
                         <!-- <router-link
-                          to="{name:'search,query:{categoryName:c3.categoryName,category3Id:c3.categoryId}}"
-                        >{{c3.categoryName}}</router-link>-->
+                          to="{name:'search,query:{categoryName:c2.categoryName,category2Id:c2.categoryId}}"
+                        >{{c2.categoryName}}</router-link>-->
 
                         <!-- 方案2：编程式导航 -->
-                        <!-- 修改为编程式导航，卡的不厉害了，因为我们使用事件处理，不会创建很多的组件对象，
-                        但是会出现很多的事件回调，内存占用比较大，效率还是不高，最终决定使用事件委派来解决-->
                         <!-- <a
                           href="javascript:;"
-                          @click="$router.push({name:'search',query:{categoryName:c3.categoryName,category3Id:c3.categoryId}})"
-                        >{{c3.categoryName}}</a>-->
+                          @click="$router.push({name:'search',query:{categoryName:c2.categoryName,category2Id:c2.categoryId}})"
+                        >{{c2.categoryName}}</a>-->
 
                         <!-- 方案3：事件委派 -->
                         <a
                           href="javascript:;"
-                          :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.categoryId"
-                        >{{c3.categoryName}}</a>
-                      </em>
-                    </dd>
-                  </dl>
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                        >{{c2.categoryName}}</a>
+                      </dt>
+                      <dd>
+                        <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                          <!-- <a href>{{c3.categoryName}}</a> -->
+                          <!-- 方案1：修改为声明式导航，发现页面会卡顿，在鼠标在菜单栏上移动的时候
+                          【每次创建一个标签都会创建一个新的对象，创建的太多就造成页面卡顿】-->
+                          <!-- <router-link
+                            to="{name:'search,query:{categoryName:c3.categoryName,category3Id:c3.categoryId}}"
+                          >{{c3.categoryName}}</router-link>-->
+
+                          <!-- 方案2：编程式导航 -->
+                          <!-- 修改为编程式导航，卡的不厉害了，因为我们使用事件处理，不会创建很多的组件对象，
+                          但是会出现很多的事件回调，内存占用比较大，效率还是不高，最终决定使用事件委派来解决-->
+                          <!-- <a
+                            href="javascript:;"
+                            @click="$router.push({name:'search',query:{categoryName:c3.categoryName,category3Id:c3.categoryId}})"
+                          >{{c3.categoryName}}</a>-->
+
+                          <!-- 方案3：事件委派 -->
+                          <a
+                            href="javascript:;"
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                          >{{c3.categoryName}}</a>
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -110,6 +112,7 @@ export default {
   data() {
     return {
       currentIndex: -1,
+      isShow: true,
     };
   },
   // 发送请求放在 TopNav组件中，点击 Home 和 Search 组件的时候都会发送请求三级导航的请求
@@ -118,6 +121,12 @@ export default {
   //   // this.$store.dispath("getCategoryList");
   //   this.getCategoryList();
   // },
+  // 如果当前页面不是home页面就隐藏三级导航（也就是search页面的时候）
+  mounted() {
+    if (this.$route.path !== "/home") {
+      this.isShow = false;
+    }
+  },
   methods: {
     // getCategoryList() {
     //   this.$store.dispatch("getCategoryList");
