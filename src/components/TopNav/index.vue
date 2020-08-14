@@ -1,7 +1,92 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <div @mouseleave="currentIndex = -1">
+        <h2 class="all">全部商品分类</h2>
+        <div class="sort">
+          <div class="all-sort-list2" @click="toSearch">
+            <div
+              class="item"
+              :class="{item_on:currentIndex===index}"
+              @mouseenter="moveIn(index)"
+              v-for="(c1,index) in categoryList"
+              :key="c1.categoryId"
+            >
+              <h3>
+                <!-- <a href>{{c1.categoryName}}</a> -->
+                <!-- 方案1：修改为声明式导航 -->
+                <!-- <router-link
+                  to="{name:'search,query:{categoryName:c1.categoryName,category1Id:c1.categoryId}}"
+                >{{c1.categoryName}}</router-link>-->
+
+                <!-- 方案2：编程式导航 -->
+                <!-- <a
+                  href="javascript:;"
+                  @click="$router.push({name:'search',query:{categoryName:c1.categoryName,category1Id:c1.categoryId}})"
+                >{{c1.categoryName}}</a>-->
+
+                <!-- 方案3：事件委派 -->
+                <a
+                  href="javascript:;"
+                  :data-categoryName="c1.categoryName"
+                  :data-category1Id="c1.categoryId"
+                >{{c1.categoryName}}</a>
+              </h3>
+              <div class="item-list clearfix">
+                <div class="subitem">
+                  <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
+                    <dt>
+                      <!-- <a href>{{c2.categoryName}}</a> -->
+                      <!-- 方案1：修改为声明式导航 -->
+                      <!-- <router-link
+                        to="{name:'search,query:{categoryName:c2.categoryName,category2Id:c2.categoryId}}"
+                      >{{c2.categoryName}}</router-link>-->
+
+                      <!-- 方案2：编程式导航 -->
+                      <!-- <a
+                        href="javascript:;"
+                        @click="$router.push({name:'search',query:{categoryName:c2.categoryName,category2Id:c2.categoryId}})"
+                      >{{c2.categoryName}}</a>-->
+
+                      <!-- 方案3：事件委派 -->
+                      <a
+                        href="javascript:;"
+                        :data-categoryName="c2.categoryName"
+                        :data-category2Id="c2.categoryId"
+                      >{{c2.categoryName}}</a>
+                    </dt>
+                    <dd>
+                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                        <!-- <a href>{{c3.categoryName}}</a> -->
+                        <!-- 方案1：修改为声明式导航，发现页面会卡顿，在鼠标在菜单栏上移动的时候
+                        【每次创建一个标签都会创建一个新的对象，创建的太多就造成页面卡顿】-->
+                        <!-- <router-link
+                          to="{name:'search,query:{categoryName:c3.categoryName,category3Id:c3.categoryId}}"
+                        >{{c3.categoryName}}</router-link>-->
+
+                        <!-- 方案2：编程式导航 -->
+                        <!-- 修改为编程式导航，卡的不厉害了，因为我们使用事件处理，不会创建很多的组件对象，
+                        但是会出现很多的事件回调，内存占用比较大，效率还是不高，最终决定使用事件委派来解决-->
+                        <!-- <a
+                          href="javascript:;"
+                          @click="$router.push({name:'search',query:{categoryName:c3.categoryName,category3Id:c3.categoryId}})"
+                        >{{c3.categoryName}}</a>-->
+
+                        <!-- 方案3：事件委派 -->
+                        <a
+                          href="javascript:;"
+                          :data-categoryName="c3.categoryName"
+                          :data-category3Id="c3.categoryId"
+                        >{{c3.categoryName}}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -12,37 +97,21 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item bo" v-for="c1 in categoryList" :key="c1.categoryId">
-            <h3>
-              <a href>{{c1.categoryName}}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div class="subitem">
-                <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
-                  <dt>
-                    <a href>{{c2.categoryName}}</a>
-                  </dt>
-                  <dd>
-                    <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                      <a href>{{c3.categoryName}}</a>
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
+// import _ from "lodash"; // 打包后的项目体积过大， _ 代表lodash
+import throttle from "lodash/throttle"; // 引入lodash，局部引入
 export default {
   name: "TopNav",
+  data() {
+    return {
+      currentIndex: -1,
+    };
+  },
   mounted() {
     // this.$store.dispath("getCategoryList");
     this.getCategoryList();
@@ -51,6 +120,49 @@ export default {
     getCategoryList() {
       this.$store.dispatch("getCategoryList");
     },
+    //lodash中节流： _.throttle(renewToken, 300000, { 'trailing': false })
+    // moveIn: function (index) {
+    //   console.log(index);  // 测试鼠标移动过快后，是否可以正常打印对应的下标index
+    //   this.currentIndex = index;
+    // },
+    moveIn: throttle(
+      function (index) {
+        this.currentIndex = index;
+      },
+      30,
+      { trailing: false }
+    ), // {'trailing': false},在刚触发时就执行，否则会有延迟执行
+
+    // 点击类别事件回调
+    toSearch(event) {
+      //console.log(event);
+      let data = event.target.dataset;
+      let { categoryname, category1id, category2id, category3id } = data;
+      // 如果点击的 categoryname 存在，说明点击的就是 a 标签
+      if (categoryname) {
+        // 创建一个对象保存 query参数 和 params参数 的值
+        // name 的值是已知确定的
+        let location = { name: "search" };
+        // 注意data对象中打印的 categoryname 的值都是小写的形式，要赋值给 categoryName
+        // categoryname是公共已知的参数，可保存在 query 参数中
+        let query = { categoryName: categoryname };
+        // 判断 id 是几级的，就显示几级对应的id,保存到query参数中,query参数收集完毕
+        if (category1id) {
+          query.category1Id = category1id;
+        } else if (category2id) {
+          query.category2Id = category2id;
+        } else {
+          query.category3Id = category3id;
+        }
+        // 将收集好的 query 参数保存到location对象中
+        location.query = query;
+        //点击类别的时候带的是query参数，我们得去看看原来有没有params参数，有的话也得带上
+        if (this.$route.params) {
+          location.params = this.$route.params;
+        }
+        this.$router.push(location);
+      }
+    }
   },
   computed: {
     // ...mapState(['categoryList']) //错的  之前是对的
@@ -99,11 +211,11 @@ export default {
     .sort {
       position: absolute;
       left: 0;
-      top: 45px;
+      top: 46px;
       width: 210px;
       height: 461px;
       position: absolute;
-      background: #fafafa;
+      background: #ddd;
       z-index: 999;
 
       .all-sort-list2 {
@@ -175,7 +287,7 @@ export default {
             }
           }
 
-          &:hover {
+          &.item_on {
             background-color: #ccc;
             .item-list {
               display: block;
