@@ -1,7 +1,7 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="currentIndex = -1">
+      <div @mouseleave="moveOutList" @mouseenter="moveInList">
         <h2 class="all">全部商品分类</h2>
         <transition name="show">
           <div class="sort" v-show="isShow">
@@ -173,6 +173,17 @@ export default {
           location.params = this.$route.params;
         }
         this.$router.push(location);
+      }
+    },
+    // 不管是 home组件还是 search组件，移入的时候，都会显示三级导航栏
+    moveInList() {
+      this.isShow = true;
+    },
+    // 移出的时候，search组件的三级导航会隐藏
+    moveOutList() {
+      this.currentIndex = -1;
+      if (this.$route.path !== "/home") {
+        this.isShow = false;
       }
     },
   },
