@@ -15,6 +15,15 @@ export default {
     Header,
     Footer,
   },
+  mounted() {
+    // this.$store.dispath("getCategoryList");
+    this.getCategoryList();
+  },
+  methods: {
+    getCategoryList() {
+      this.$store.dispatch("getCategoryList");
+    },
+  },
 };
 </script>
 

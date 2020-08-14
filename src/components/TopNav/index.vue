@@ -112,14 +112,17 @@ export default {
       currentIndex: -1,
     };
   },
-  mounted() {
-    // this.$store.dispath("getCategoryList");
-    this.getCategoryList();
-  },
+  // 发送请求放在 TopNav组件中，点击 Home 和 Search 组件的时候都会发送请求三级导航的请求
+  // 数据是一样的，请求会发送很多次，浪费宽带资源
+  // mounted() {
+  //   // this.$store.dispath("getCategoryList");
+  //   this.getCategoryList();
+  // },
   methods: {
-    getCategoryList() {
-      this.$store.dispatch("getCategoryList");
-    },
+    // getCategoryList() {
+    //   this.$store.dispatch("getCategoryList");
+    // },
+
     //lodash中节流： _.throttle(renewToken, 300000, { 'trailing': false })
     // moveIn: function (index) {
     //   console.log(index);  // 测试鼠标移动过快后，是否可以正常打印对应的下标index
@@ -162,7 +165,7 @@ export default {
         }
         this.$router.push(location);
       }
-    }
+    },
   },
   computed: {
     // ...mapState(['categoryList']) //错的  之前是对的
