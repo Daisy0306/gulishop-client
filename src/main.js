@@ -4,6 +4,8 @@ import App from "@/App";
 import router from "@/router";
 import TopNav from "@/components/TopNav";
 import store from "@/store";
+// 引入模拟接口数据 mock
+import "@/mock/mockServer";
 
 import "@/api"; // 为了测试用的
 
