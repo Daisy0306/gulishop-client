@@ -4,9 +4,9 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <div class="swiper-container" id="mySwiper" ref="banner">
           <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="(banner,index) in bannerList" :key="banner.id">
+            <div class="swiper-slide" v-for="banner in bannerList" :key="banner.id">
               <img :src="banner.imgUrl" />
             </div>
           </div>
@@ -103,17 +103,57 @@
 
 <script>
 import { mapState } from "vuex";
+import Swiper from "swiper";
+import "swiper/css/swiper.min.css";
 export default {
   name: "ListContainer",
   mounted() {
     // 触发拿数据,vuex中就存在了 bannerList 相关的数据了
     this.$store.dispatch("getBannerList");
+    // new Swiper 中 第一个参数是选择到根元素的标签就可以，不一定要使用css
+    // 在这里实例化 swiper 是不行的，原因：轮播图的结构还没有生成
+    // mounted 内部才去请求数据，mounted 内部已经实例化 swiper，数据返回来才创建div，所以数据不存在，那么结构就一定不存在，因为结构是通过 V-for 创建出来的
+    // 所以 new Swiper 放在这里不合适
+    // new Swiper(this.$refs.banner, {
+    //   loop: true, // 循环模式选项
+    //   // 如果需要分页器
+    //   pagination: {
+    //     el: ".swiper-pagination",
+    //   },
+    //   // 如果需要前进后退按钮
+    //   navigation: {
+    //     nextEl: ".swiper-button-next",
+    //     prevEl: ".swiper-button-prev",
+    //   },
+    // });
   },
   // 从Vue中拿数据一定是在 computed 中拿，拿方法是在 methods 中拿
   computed: {
     ...mapState({
       bannerList: (state) => state.home.bannerList,
     }),
+  },
+  watch: {
+    // 简便写法：bannerList(newValue,oldValue){ }
+    // 以下是复杂写法，固定写法
+    bannerList: {
+      handler(newValue, oldValue) {
+        this.$nextTick(() => {
+          new Swiper(this.$refs.banner, {
+            loop: true, // 循环模式选项
+            // 如果需要分页器
+            pagination: {
+              el: ".swiper-pagination",
+            },
+            // 如果需要前进后退按钮
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+        });
+      },
+    },
   },
 };
 </script>
