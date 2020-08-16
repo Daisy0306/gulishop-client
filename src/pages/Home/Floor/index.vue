@@ -22,7 +22,7 @@
               <img :src="floor.imgUrl" />
             </div>
             <div class="floorBanner">
-              <div class="swiper-container" id="floor1Swiper">
+              <div class="swiper-container" ref="floor1Swiper">
                 <div class="swiper-wrapper">
                   <div
                     class="swiper-slide"
@@ -69,9 +69,28 @@
 </template>
 
 <script>
+import Swiper from "swiper";
+import "swiper/css/swiper.min.css";
 export default {
   name: "Floor",
   props: ["floor"], //声明接收属性
+  mounted() {
+    // 这里直接创建 Swiper 实例，是可以的
+    // 因为 我们floor当中 轮播图结构已经形成了
+    // 因为我们的 floor 数据不需要请求获取，而是直接在创建 floor 组件的时候就已经有这个数据了
+    new Swiper(this.$refs.floor1Swiper, {
+      loop: true, // 循环模式选项
+      // 如果需要分页器
+      pagination: {
+        el: ".swiper-pagination",
+      },
+      // 如果需要前进后退按钮
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  },
 };
 </script>
 
