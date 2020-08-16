@@ -51,7 +51,7 @@ const actions = {
     }) {
         const result = await reqFloorList();
         if (result.code === 200) {
-            commit("RECEIVEFLOOTLIST".result.data);
+            commit("RECEIVEFLOORLIST",result.data);
         }
     }
 }
