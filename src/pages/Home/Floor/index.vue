@@ -22,7 +22,7 @@
               <img :src="floor.imgUrl" />
             </div>
             <div class="floorBanner">
-              <div class="swiper-container" ref="floor1Swiper">
+              <!-- <div class="swiper-container" ref="floor1Swiper">
                 <div class="swiper-wrapper">
                   <div
                     class="swiper-slide"
@@ -32,13 +32,11 @@
                     <img :src="carousel.imgUrl" />
                   </div>
                 </div>
-                <!-- 如果需要分页器 -->
                 <div class="swiper-pagination"></div>
-
-                <!-- 如果需要导航按钮 -->
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-button-next"></div>
-              </div>
+              </div>-->
+              <SliderLoop :bannerList="floor.carouselList"></SliderLoop>
             </div>
             <div class="split">
               <span class="floor-x-line"></span>
@@ -69,28 +67,55 @@
 </template>
 
 <script>
-import Swiper from "swiper";
-import "swiper/css/swiper.min.css";
+// import Swiper from "swiper";
+// import "swiper/css/swiper.min.css";
 export default {
   name: "Floor",
   props: ["floor"], //声明接收属性
-  mounted() {
-    // 这里直接创建 Swiper 实例，是可以的
-    // 因为 我们floor当中 轮播图结构已经形成了
-    // 因为我们的 floor 数据不需要请求获取，而是直接在创建 floor 组件的时候就已经有这个数据了
-    new Swiper(this.$refs.floor1Swiper, {
-      loop: true, // 循环模式选项
-      // 如果需要分页器
-      pagination: {
-        el: ".swiper-pagination",
-      },
-      // 如果需要前进后退按钮
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-    });
-  },
+  // mounted() {
+  //   // 这里直接创建 Swiper 实例，是可以的
+  //   // 因为 我们floor当中 轮播图结构已经形成了
+  //   // 因为我们的 floor 数据不需要请求获取，而是直接在创建 floor 组件的时候就已经有这个数据了
+  //   new Swiper(this.$refs.floor1Swiper, {
+  //     loop: true, // 循环模式选项
+  //     // 如果需要分页器
+  //     pagination: {
+  //       el: ".swiper-pagination",
+  //     },
+  //     // 如果需要前进后退按钮
+  //     navigation: {
+  //       nextEl: ".swiper-button-next",
+  //       prevEl: ".swiper-button-prev",
+  //     },
+  //   });
+  // },
+
+  // 把 Floor 也改为watch的写法，改的和 ListContainer 一样，才能进行抽取公共的部分
+  // watch: {
+  //   floor: {
+  //     // 监视分为 一般监视 和 深度监视
+  //     // 简化写法：floor(){ }，只能是一般监视
+  //     // 深度监视必须使用麻烦写法
+  //     //deep:true,// 深度监视才能进行配置
+  //     immediate: true,
+  //     handler(newValue, oldValue) {
+  //       this.$nextTick(() => {
+  //         new Swiper(this.$refs.floor1Swiper, {
+  //           loop: true, // 循环模式选项
+  //           // 如果需要分页器
+  //           pagination: {
+  //             el: ".swiper-pagination",
+  //           },
+  //           // 如果需要前进后退按钮
+  //           navigation: {
+  //             nextEl: ".swiper-button-next",
+  //             prevEl: ".swiper-button-prev",
+  //           },
+  //         });
+  //       });
+  //     },
+  //   },
+  // },
 };
 </script>
 
