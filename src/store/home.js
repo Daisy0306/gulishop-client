@@ -1,14 +1,24 @@
 import {
-    reqCategoryList
+    reqCategoryList,
+    reqBannerList,
+    reqFloorList
 } from "@/api";
 const state = {
-    categoryList: []
+    categoryList: [],
+    bannerList: [],
+    floorList: []
 }
 
 const mutations = {
     // 直接修改数据 （不允许出现 if判断 for循环 异步操作 ）
     RECEIVECATEGORYLIST(state, categoryList) {
         state.categoryList = categoryList;
+    },
+    RECEIVEBANNERLIST(state, bannerList) {
+        state.bannerList = bannerList;
+    },
+    RECEIVEFLOORLIST(state, floorList) {
+        state.floorList = floorList;
     }
 }
 const actions = {
@@ -26,6 +36,22 @@ const actions = {
         const result = await reqCategoryList();
         if (result.code === 200) {
             commit("RECEIVECATEGORYLIST", result.data);
+        }
+    },
+    async getBannerList({
+        commit
+    }) {
+        const result = await reqBannerList();
+        if (result.code === 200) {
+            commit('RECEIVEBANNERLIST', result.data);
+        }
+    },
+    async getFloorList({
+        commit
+    }) {
+        const result = await reqFloorList();
+        if (result.code === 200) {
+            commit("RECEIVEFLOOTLIST".result.data);
         }
     }
 }
