@@ -158,6 +158,36 @@ export default {
       },
     };
   },
+  // beforemount 中用来同步处理数据（参数）
+  // 把路由当中的 keyword 还有相关的类别名称及类别id获取到，添加到 searchParams 搜索条件中
+  // 如果有，那么搜索条件中就有了，如果没有，那就是初始化参数
+  beforeMount() {
+    // let { keyword } = this.$route.params;
+    // let {
+    //   categoryName,
+    //   category1Id,
+    //   category2Id,
+    //   category3Id,
+    // } = this.$route.query;
+    // // 这里的 searchParams 是新的局部变量，不是data中的
+    // let searchParams = {
+    //   ...this.searchParams,
+    //   // 不管后面有没有。都解构出来，有就覆盖，没有就为 undefined
+    //   keyword,
+    //   categoryName,
+    //   category1Id,
+    //   category2Id,
+    //   category3Id,
+    // };
+    // // 优化性能：这个参数，如果传的是空串，就没必要
+    // Object.keys(searchParams).forEach((item) => {
+    //   if (searchParams[item] === "") {
+    //     delete searchParams[item];
+    //   }
+    // });
+    // this.searchParams = searchParams;
+    this.handlerSearchParams();
+  },
   //用封装函数的写法，不直接 dispath
   mounted() {
     this.getGoodsListInfo();
@@ -166,12 +196,46 @@ export default {
     getGoodsListInfo() {
       this.$store.dispatch("getGoodsListInfo", this.searchParams);
     },
+    // 处理请求参数
+    handlerSearchParams() {
+      let { keyword } = this.$route.params;
+      let {
+        categoryName,
+        category1Id,
+        category2Id,
+        category3Id,
+      } = this.$route.query;
+      // 这里的 searchParams 是新的局部变量，不是data中的
+      let searchParams = {
+        ...this.searchParams,
+        // 不管后面有没有。都解构出来，有就覆盖，没有就为 undefined
+        keyword,
+        categoryName,
+        category1Id,
+        category2Id,
+        category3Id,
+      };
+      // 优化性能：这个参数，如果传的是空串，就没必要
+      Object.keys(searchParams).forEach((item) => {
+        if (searchParams[item] === "") {
+          delete searchParams[item];
+        }
+      });
+      this.searchParams = searchParams;
+    },
   },
   computed: {
     ...mapGetters(["goodsList"]),
   },
   components: {
     SearchSelector,
+  },
+  // 解决search页面输入搜索参数或者不会发送请求的bug
+  watch: {
+    $route() {
+      this.handlerSearchParams();
+      this.getGoodsListInfo();
+    },
   },
 };
 </script>
