@@ -11,18 +11,15 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">
-              iphone
-              <i>×</i>
+            <!-- 展示三级分类点击的面包屑添加功能 -->
+            <li class="with-x" v-show="searchParams.categoryName">
+              {{searchParams.categoryName}}
+              <i @click="removeCategoryName">×</i>
             </li>
-            <li class="with-x">
-              华为
-              <i>×</i>
-            </li>
-            <li class="with-x">
-              OPPO
-              <i>×</i>
+            <!-- 展示搜索框中输入内容添加到面包屑中 -->
+            <li class="with-x" v-show="searchParams.keyword">
+              {{searchParams.keyword}}
+              <i @click="removeKeyword">×</i>
             </li>
           </ul>
         </div>
@@ -193,6 +190,7 @@ export default {
     this.getGoodsListInfo();
   },
   methods: {
+    // 发送请求
     getGoodsListInfo() {
       this.$store.dispatch("getGoodsListInfo", this.searchParams);
     },
@@ -215,13 +213,27 @@ export default {
         category2Id,
         category3Id,
       };
-      // 优化性能：这个参数，如果传的是空串，就没必要
+      // 优化性能：这个参数，如果传的是空串，就没必要留着
       Object.keys(searchParams).forEach((item) => {
         if (searchParams[item] === "") {
           delete searchParams[item];
         }
       });
       this.searchParams = searchParams;
+    },
+    // 删除面包屑当中的类名请求参数
+    removeCategoryName() {
+      // 先输出面包屑当中的参数，再重新发送请求
+      this.searchParams.categoryName = "";
+      // this.getGoodsListInfo(); // 通过dispath只会发送请求不会改变路径
+      // 必须通过 push 或者 replace 才能改变路径
+      // 这里push可以发送请求是因为下面的watch进行了监视
+      this.$router.push({ name: "search", params: this.$route.params });
+    },
+    // 删除面包屑当中的关键字请求参数
+    removeKeyword() {
+      this.searchParams.keyword = "";
+      this.$router.replace({ name: "search", query: this.$route.query });
     },
   },
   computed: {
