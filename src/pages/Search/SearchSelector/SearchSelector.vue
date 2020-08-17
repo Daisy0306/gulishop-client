@@ -38,6 +38,13 @@ export default {
   computed: {
     ...mapGetters(["attrsList", "trademarkList"]),
   },
+  methods: {
+    searchForTrademark(trademark) {
+      //需要给父亲传递 trademark数据，让父亲去发请求
+      // 子向父传递数据，用自定义事件
+      this.$emit("searchForTrademark", trademark);
+    },
+  },
 };
 </script>
 

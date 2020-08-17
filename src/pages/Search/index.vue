@@ -21,11 +21,18 @@
               {{searchParams.keyword}}
               <i @click="removeKeyword">×</i>
             </li>
+            <!-- 展示品牌内容到面包屑 -->
+            <li class="with-x" v-show="searchParams.trademark">
+              {{(searchParams.trademark?searchParams.trademark:"").split(":")[1]}}
+              <i
+                @click="removeTrademark"
+              >×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @searchForTrademark="searchForTrademark" />
 
         <!--details-->
         <div class="details clearfix">
@@ -234,6 +241,16 @@ export default {
     removeKeyword() {
       this.searchParams.keyword = "";
       this.$router.replace({ name: "search", query: this.$route.query });
+    },
+    searchForTrademark(trademark) {
+      // 回调函数在谁当中，谁就是接收数据的
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getGoodsListInfo();
+    },
+    // 删除面包屑中的品牌参数
+    removeTrademark() {
+      this.searchParams.trademark = "";
+      this.getGoodsListInfo();
     },
   },
   computed: {
