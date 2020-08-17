@@ -28,11 +28,19 @@
                 @click="removeTrademark"
               >×</i>
             </li>
+            <!-- 显示属性相关的值 -->
+            <li class="with-x" v-for="(prop, index) in searchParams.props" :key="index">
+              {{prop.split(':')[1]}}
+              <i @click="removeProp(index)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @searchForTrademark="searchForTrademark" />
+        <SearchSelector
+          @searchForTrademark="searchForTrademark"
+          @searchForAttrValue="searchForAttrValue"
+        />
 
         <!--details-->
         <div class="details clearfix">
@@ -250,6 +258,28 @@ export default {
     // 删除面包屑中的品牌参数
     removeTrademark() {
       this.searchParams.trademark = "";
+      this.getGoodsListInfo();
+    },
+    //使用自定义事件组件通信（子向父），达到根据属性值搜索
+    searchForAttrValue(attr, attrValue) {
+      //"属性ID:属性值:属性名"
+      //要先去判断props当中是否已经存在这个点击的属性值条件，如果有了就不需要再去发请求
+      // let isTrue = this.searchParams.props.some(item => item === `${attr.attrId}:${attrValue}:${attr.attrName}`)
+      // if(isTrue) return
+
+      let num = this.searchParams.props.indexOf(
+        `${attr.attrId}:${attrValue}:${attr.attrName}`
+      );
+      if (num !== -1) return;
+
+      this.searchParams.props.push(
+        `${attr.attrId}:${attrValue}:${attr.attrName}`
+      );
+      this.getGoodsListInfo();
+    },
+    removeProp(index) {
+      //删除某一个下标的属性值
+      this.searchParams.props.splice(index, 1);
       this.getGoodsListInfo();
     },
   },

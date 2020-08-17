@@ -44,6 +44,9 @@ export default {
       // 子向父传递数据，用自定义事件
       this.$emit("searchForTrademark", trademark);
     },
+    searchForAttrValue(attr, attrValue) {
+      this.$emit("searchForAttrValue", attr, attrValue);
+    },
   },
 };
 </script>
