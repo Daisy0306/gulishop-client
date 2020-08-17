@@ -26,8 +26,8 @@ const actions = {
 
 // 加 getters 的目的是为了防止 A.B.C 的出现，vue中会出现假报错
 const getters = {
-    attrslist(state) {
-        return state.goodsListInfo.attrslist || [];
+    attrsList(state) {
+        return state.goodsListInfo.attrsList || [];
     },
     goodsList(state) {
         return state.goodsListInfo.goodsList || [];
