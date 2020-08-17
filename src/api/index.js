@@ -27,3 +27,14 @@ export const reqFloorList = () => {
         method: "GET"
     })
 }
+
+// 搜索商品的接口数据
+export const reqGoodsListInfo = (searchParams) => {
+    return Ajax({
+        url: "/list",
+        method: "post",
+        data: searchParams
+    })
+}
+// 测试 商品接口数据的post请求是否发送成功，必须传参：空对象
+//reqGoodsListInfo({}); // XHR中新增 list 相关的请求记录
