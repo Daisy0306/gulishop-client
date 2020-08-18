@@ -4,6 +4,7 @@ import App from "@/App";
 import router from "@/router";
 import TopNav from "@/components/TopNav";
 import SliderLoop from "@/components/SliderLoop";
+import Pagination from "@/components/Pagination";
 import store from "@/store";
 // 引入模拟接口数据 mock
 import "@/mock/mockServer";
@@ -14,6 +15,7 @@ Vue.config.productionTip = false;
 // 注册全局组件
 Vue.component("TopNav", TopNav);
 Vue.component("SliderLoop", SliderLoop);
+Vue.component("Pagination", Pagination);
 
 new Vue({
   router,
