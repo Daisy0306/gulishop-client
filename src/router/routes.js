@@ -2,9 +2,14 @@ import Home from "@/pages/Home";
 import Search from "@/pages/Search";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import Detail from "@/pages/Detail";
 
 export default [
     //专门配置各种路由的地方，要区分路由和路由器
+    {
+        path: '/detail/:skuId',
+        component: Detail
+    },
     {
         path: "/home",
         component: Home,
