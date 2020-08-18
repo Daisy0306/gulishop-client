@@ -223,6 +223,8 @@ export default {
     },
     // 删除面包屑当中的类名请求参数
     removeCategoryName() {
+      // 初始化显示页面为第1页
+      this.searchParams.pageNo = 1;
       // 先输出面包屑当中的参数，再重新发送请求
       this.searchParams.categoryName = "";
       // this.getGoodsListInfo(); // 通过dispath只会发送请求不会改变路径
@@ -232,17 +234,23 @@ export default {
     },
     // 删除面包屑当中的关键字请求参数
     removeKeyword() {
+      // 初始化显示页面为第1页
+      this.searchParams.pageNo = 1;
       this.$bus.$emit("clearKeyword");
       this.searchParams.keyword = "";
       this.$router.replace({ name: "search", query: this.$route.query });
     },
     searchForTrademark(trademark) {
+      // 初始化显示页面为第1页
+      this.searchParams.pageNo = 1;
       // 回调函数在谁当中，谁就是接收数据的
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getGoodsListInfo();
     },
     // 删除面包屑中的品牌参数
     removeTrademark() {
+      // 初始化显示页面为第1页
+      this.searchParams.pageNo = 1;
       this.searchParams.trademark = "";
       this.getGoodsListInfo();
     },
@@ -258,12 +266,16 @@ export default {
       );
       if (num !== -1) return;
 
+      // 初始化显示页面为第1页
+      this.searchParams.pageNo = 1;
       this.searchParams.props.push(
         `${attr.attrId}:${attrValue}:${attr.attrName}`
       );
       this.getGoodsListInfo();
     },
     removeProp(index) {
+      // 初始化显示页面为第1页
+      this.searchParams.pageNo = 1;
       //删除某一个下标的属性值
       this.searchParams.props.splice(index, 1);
       this.getGoodsListInfo();
@@ -282,6 +294,8 @@ export default {
         // 点击的不是原来排序的那个，那么我们需要去改变排序的标志，类型是默认排序
         newOrder = `${orderFlag}:desc`;
       }
+      // 初始化显示页面为第1页
+      this.searchParams.pageNo = 1;
       // 重新改变排序方式
       this.searchParams.order = newOrder;
       // 重新发送请求
