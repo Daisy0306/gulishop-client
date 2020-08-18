@@ -47,13 +47,13 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{active:searchParams.order.split(':')[0] === '1'}">
+                <li :class="{active:orderFlag === '1'}">
                   <a href="javascript:;" @click="changeOrder('1')">
                     综合
                     <i
                       class="iconfont"
-                      :class="{icondown:searchParams.order.split(':')[1] === 'desc',iconup:searchParams.order.split(':')[1] === 'asc'}"
-                      v-if="searchParams.order.split(':')[0] === '1'"
+                      :class="{icondown:orderType === 'desc',iconup:orderType === 'asc'}"
+                      v-if="orderFlag === '1'"
                     ></i>
                   </a>
                 </li>
@@ -66,13 +66,13 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li :class="{active:searchParams.order.split(':')[0] === '2'}">
+                <li :class="{active:orderFlag === '2'}">
                   <a href="javascript:;" @click="changeOrder('2')">
                     价格
                     <i
                       class="iconfont"
-                      :class="{iconup:searchParams.order.split(':')[1]==='asc',icondown:searchParams.order.split(':')[1]==='desc'}"
-                      v-if="searchParams.order.split(':')[0]==='2'"
+                      :class="{iconup:orderType==='asc',icondown:orderType==='desc'}"
+                      v-if="orderFlag==='2'"
                     ></i>
                   </a>
                 </li>
@@ -316,6 +316,13 @@ export default {
   },
   computed: {
     ...mapGetters(["goodsList"]),
+    // 模板内部排序表达式的优化处理
+    orderFlag() {
+      return this.searchParams.order.split(":")[0];
+    },
+    orderType() {
+      return this.searchParams.order.split(":")[1];
+    },
   },
   components: {
     SearchSelector,
