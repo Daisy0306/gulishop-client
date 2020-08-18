@@ -1,26 +1,84 @@
 <template>
   <div class="pagination">
-    <button>1</button>
-    <button>上一页</button>
-    <button>···</button>
+    <button :disabled="currentPageNum === 1" @click="$emit('changePageNum',currentPageNum - 1)">上一页</button>
+    <button v-if="startEnd.start > 1" @click="$emit('changePageNum',1)">1</button>
+    <button v-if="startEnd.start > 2">···</button>
 
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
-    <button>7</button>
+    <button
+      v-for="page in startEnd.end"
+      :key="page"
+      v-if="page >= startEnd.start"
+      :class="{active:currentPageNum === page}"
+      @click="$emit('changePageNum',page)"
+    >{{page}}</button>
 
-    <button>···</button>
-    <button>9</button>
-    <button>上一页</button>
+    <button v-if="startEnd.end < totalPageNum - 1">···</button>
+    <button
+      v-if="startEnd.end < totalPageNum"
+      @click="$emit('changePageNum',totalPageNum)"
+    >{{totalPageNum}}</button>
+    <button
+      :disabled="currentPageNum === totalPageNum"
+      @click="$emit('changePageNum',currentPageNum + 1)"
+    >下一页</button>
 
-    <button style="margin-left: 30px">共 60 条</button>
+    <button style="margin-left: 30px">共 {{total}} 条</button>
   </div>
 </template>
 
 <script>
 export default {
   name: "Pagination",
+  props: {
+    // 当前页码
+    currentPageNum: {
+      type: Number,
+      default: 1,
+    },
+    // 展示商品总数
+    total: Number,
+    // 每一页展示的商品数量
+    pageSize: {
+      type: Number,
+      default: 5,
+    },
+    // 连续展示的页码数
+    continueSize: Number,
+  },
+  computed: {
+    // 计算总页码
+    totalPageNum() {
+      return Math.ceil(this.total / this.pageSize);
+    },
+    //连续页的起始位置和结束位置
+    startEnd() {
+      let start, end, disNum;
+      let { currentPageNum, continueSize, totalPageNum } = this;
+
+      if (continueSize >= totalPageNum) {
+        start = 1;
+        end = totalPageNum;
+      } else {
+        start = currentPageNum - Math.floor(continueSize / 2);
+        end = currentPageNum + Math.floor(continueSize / 2);
+
+        if (start <= 1) {
+          //修正左边出现的小于1的页码
+          disNum = 1 - start;
+          start += disNum;
+          end += disNum;
+        }
+
+        if (end >= totalPageNum) {
+          //修正右边出现的大于总页码的页码
+          disNum = end - totalPageNum;
+          start -= disNum;
+          end -= disNum;
+        }
+      }
+      return { start, end };
+    },
+  },
 };
 </script>
 

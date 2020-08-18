@@ -120,7 +120,13 @@
               </li>
             </ul>
           </div>
-          <pagination />
+          <pagination
+            :currentPageNum="searchParams.pageNo"
+            :total="goodsListInfo.total"
+            :pageSize="searchParams.pageSize"
+            :continueSize="5"
+            @changePageNum="changePageNum"
+          />
         </div>
       </div>
     </div>
@@ -129,7 +135,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "Search",
   data() {
@@ -145,7 +151,7 @@ export default {
         trademark: "",
         order: "1:desc",
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 2,
       },
     };
   },
@@ -281,9 +287,18 @@ export default {
       // 重新发送请求
       this.getGoodsListInfo();
     },
+    changePageNum(page) {
+      // 显示当前页面为点击页面
+      this.searchParams.pageNo = page;
+      // 重新发送请求显示页面
+      this.getGoodsListInfo();
+    },
   },
   computed: {
     ...mapGetters(["goodsList"]),
+    ...mapState({
+      goodsListInfo: (state) => state.search.goodsListInfo,
+    }),
     // 模板内部排序表达式的优化处理
     orderFlag() {
       return this.searchParams.order.split(":")[0];
