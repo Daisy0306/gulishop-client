@@ -47,8 +47,15 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:searchParams.order.split(':')[0] === '1'}">
+                  <a href="javascript:;" @click="changeOrder('1')">
+                    综合
+                    <i
+                      class="iconfont"
+                      :class="{icondown:searchParams.order.split(':')[1] === 'desc',iconup:searchParams.order.split(':')[1] === 'asc'}"
+                      v-if="searchParams.order.split(':')[0] === '1'"
+                    ></i>
+                  </a>
                 </li>
                 <li>
                   <a href="#">销量</a>
@@ -59,11 +66,15 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:searchParams.order.split(':')[0] === '2'}">
+                  <a href="javascript:;" @click="changeOrder('2')">
+                    价格
+                    <i
+                      class="iconfont"
+                      :class="{iconup:searchParams.order.split(':')[1]==='asc',icondown:searchParams.order.split(':')[1]==='desc'}"
+                      v-if="searchParams.order.split(':')[0]==='2'"
+                    ></i>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -281,6 +292,25 @@ export default {
     removeProp(index) {
       //删除某一个下标的属性值
       this.searchParams.props.splice(index, 1);
+      this.getGoodsListInfo();
+    },
+    // 综合和价格排序切换规则
+    changeOrder(orderFlag) {
+      let originOrderFlag = this.searchParams.order.split(":")[0];
+      let originOrderType = this.searchParams.order.split(":")[1];
+      let newOrder = "";
+      // 代表点击的还是原来排序的那个，只需要改变排序类型
+      if (orderFlag === originOrderFlag) {
+        newOrder = `${originOrderFlag}:${
+          originOrderType === "desc" ? "asc" : "desc"
+        }`;
+      } else {
+        // 点击的不是原来排序的那个，那么我们需要去改变排序的标志，类型是默认排序
+        newOrder = `${orderFlag}:desc`;
+      }
+      // 重新改变排序方式
+      this.searchParams.order = newOrder;
+      // 重新发送请求
       this.getGoodsListInfo();
     },
   },
