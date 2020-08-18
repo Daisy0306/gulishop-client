@@ -18,6 +18,9 @@ Vue.component("SliderLoop", SliderLoop);
 new Vue({
   router,
   el: "#app",
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  },
   render: (h) => h(App),
   store
 });

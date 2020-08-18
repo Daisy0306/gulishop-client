@@ -247,6 +247,7 @@ export default {
     },
     // 删除面包屑当中的关键字请求参数
     removeKeyword() {
+      this.$bus.$emit("clearKeyword");
       this.searchParams.keyword = "";
       this.$router.replace({ name: "search", query: this.$route.query });
     },
