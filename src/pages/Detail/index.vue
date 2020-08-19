@@ -16,9 +16,9 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom :imgList="imgList" />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList :imgList="imgList" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -65,12 +65,12 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl v-for="(spuSaleAttr,index) in spuSaleAttrList" :key="spuSaleAttr.id">
+              <dl v-for="spuSaleAttr in spuSaleAttrList" :key="spuSaleAttr.id">
                 <dt class="title">{{spuSaleAttr.saleAttrName}}</dt>
                 <dd
                   changepirce="0"
                   class="active"
-                  v-for="(spuSaleAttrValue,index) in spuSaleAttr.spuSaleAttrValueList"
+                  v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
                 >{{spuSaleAttrValue.saleAttrValueName}}</dd>
               </dl>
@@ -337,6 +337,9 @@ export default {
   },
   computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
+    imgList() {
+      return this.skuInfo.skuImageList || [];
+    },
   },
   components: {
     ImageList,
