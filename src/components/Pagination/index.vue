@@ -4,6 +4,7 @@
     <button v-if="startEnd.start > 1" @click="$emit('changePageNum',1)">1</button>
     <button v-if="startEnd.start > 2">···</button>
 
+    <!-- vfor和vif可以同时出现，但是vfor优先级比vif高 -->
     <button
       v-for="page in startEnd.end"
       :key="page"

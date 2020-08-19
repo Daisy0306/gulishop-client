@@ -38,3 +38,12 @@ export const reqGoodsListInfo = (searchParams) => {
 }
 // 测试 商品接口数据的post请求是否发送成功，必须传参：空对象
 //reqGoodsListInfo({}); // XHR中新增 list 相关的请求记录
+
+// 商品详情的接口数据
+///api/item/{ skuId }  get
+export const reqGoodsDetailInfo = (skuId) => {
+    return Ajax({
+        url: `item/${skuId}`,
+        method: "GET"
+    })
+}
