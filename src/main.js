@@ -6,6 +6,8 @@ import TopNav from "@/components/TopNav";
 import SliderLoop from "@/components/SliderLoop";
 import Pagination from "@/components/Pagination";
 import store from "@/store";
+
+import "swiper/css/swiper.min.css";
 // 引入模拟接口数据 mock
 import "@/mock/mockServer";
 

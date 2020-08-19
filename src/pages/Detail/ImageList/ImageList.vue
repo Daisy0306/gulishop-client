@@ -1,5 +1,5 @@
 <template>
-  <div class="swiper-container">
+  <div class="swiper-container" ref="imgList">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="(img,index) in imgList" :key="img.id">
         <img
@@ -17,6 +17,8 @@
 <script>
 import Swiper from "swiper";
 export default {
+  name: "ImageList",
+  props: ["imgList"],
   data() {
     return {
       defaultIndex: 0,
@@ -28,8 +30,26 @@ export default {
       this.$bus.$emit("changeDefaultIndex", index);
     },
   },
-  name: "ImageList",
-  props: ["imgList"],
+  watch: {
+    // 简便写法：bannerList(newValue,oldValue){ }
+    // 以下是复杂写法，固定写法
+    imgList: {
+      immediate: true,
+      handler(newValue, oldValue) {
+        this.$nextTick(() => {
+          new Swiper(this.$refs.imgList, {
+            slidesPerView: 6, // 一次展示6张图片
+            slidesPerGroup: 3, // 3张图片为1组
+            // 如果需要前进后退按钮
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+        });
+      },
+    },
+  },
 };
 </script>
 
