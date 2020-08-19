@@ -69,9 +69,10 @@
                 <dt class="title">{{spuSaleAttr.saleAttrName}}</dt>
                 <dd
                   changepirce="0"
-                  class="active"
+                  :class="{active:spuSaleAttrValue.isChecked === '1'}"
                   v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
+                  @click="changeIsChecked(spuSaleAttr.spuSaleAttrValueList,spuSaleAttrValue)"
                 >{{spuSaleAttrValue.saleAttrValueName}}</dd>
               </dl>
             </div>
@@ -333,6 +334,15 @@ export default {
   methods: {
     getGoodsDetailInfo() {
       this.$store.dispatch("getGoodsDetailInfo", this.$route.params.skuId);
+    },
+    changeIsChecked(attrValueList, attrValue) {
+      // 排他思想实现属性值点击显示样式
+      // 1. 先让所有的属性恢复默认样式
+      attrValueList.forEach((element) => {
+        element.isChecked = "0"; // 看Vuex中的数据为字符串不是数字
+      });
+      // 2. 再让点击的那个属性值变为绿色
+      attrValue.isChecked = "1";
     },
   },
   computed: {
