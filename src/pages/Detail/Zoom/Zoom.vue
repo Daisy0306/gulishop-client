@@ -13,6 +13,14 @@
 export default {
   name: "Zoom",
   props: ["imgList"],
+  mounted(){
+    this.$bus.$on("changeDefaultIndex",this.changeDefaultIndex);
+  },
+  methods:{
+    changeDefaultIndex(index){
+      this.defaultIndex = index;
+    }
+  },
   data() {
     return {
       defaultIndex: 0,

@@ -25,6 +25,7 @@ export default {
   methods: {
     changeDefaultIndex(index) {
       this.defaultIndex = index;
+      this.$bus.$emit("changeDefaultIndex", index);
     },
   },
   name: "ImageList",
