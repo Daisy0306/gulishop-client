@@ -78,9 +78,9 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="num" />
+                <a href="javascript:" class="plus" @click="num++">+</a>
+                <a href="javascript:" class="mins" @click="num > 1 ? num-- : num">-</a>
               </div>
               <div class="add">
                 <a href="javascript:">加入购物车</a>
@@ -328,6 +328,11 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
+  data() {
+    return {
+      num: 1,
+    };
+  },
   mounted() {
     this.getGoodsDetailInfo();
   },
