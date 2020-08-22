@@ -47,3 +47,16 @@ export const reqGoodsDetailInfo = (skuId) => {
         method: "GET"
     })
 }
+
+// 请求购物车列表数据
+// /api/cart/addToCart/{ skuId }/{ skuNum }   POST 
+// 参数：① skuID 商品ID；  ② skuNum 商品数量
+export const reqAddOrUpdateCart = (skuId, skuNum) => {
+    return Ajax({
+        // 如果直接在路径当中就是 params 参数
+        // 如果路径中有 ?key=value  ，就是query参数
+        // 写在配置项中：①params:{ }；② 路径中写
+        url: `/cart/addToCart/${skuId}/${skuNum}`,
+        method: 'POST'
+    })
+}

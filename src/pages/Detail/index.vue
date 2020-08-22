@@ -78,12 +78,14 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" v-model="num" />
-                <a href="javascript:" class="plus" @click="num++">+</a>
-                <a href="javascript:" class="mins" @click="num > 1 ? num-- : num">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum > 1 ? skuNum-- : skuNum">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <!-- 不能使用声明式导航，因为不是直接跳转到添加成功页面的
+                需要先发送请求给后台，后台返回成功数据后再手动跳转，所以用编程式导航-->
+                <a href="javascript:;" @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -330,7 +332,7 @@ export default {
   name: "Detail",
   data() {
     return {
-      num: 1,
+      skuNum: 1,
     };
   },
   mounted() {
@@ -348,6 +350,27 @@ export default {
       });
       // 2. 再让点击的那个属性值变为绿色
       attrValue.isChecked = "1";
+    },
+    // 编程式导航中的方法
+    // 因为路由中，shopCart.js 发送请求是一个async函数，所以返回的一定是一个 promise 对象
+    // 思路：①先发请求给后台；②后台添加成功后返回结果；③根据结果决定是否跳转到添加成功界面
+    async addShopCart() {
+      try {
+        await this.$store.dispatch("addOrUpdateCart", {
+          skuId: this.skuInfo.id,
+          skuNum: this.skuNum,
+        });
+        alert("添加购物车成功，将自动跳转到购物车页面~");
+
+        // 成功的页面需要显示商品的详情，所以我们也得把商品得信息传递过去
+        // 不需要本地存储，所以选择 sessionStorage
+        sessionStorage.setItem("SKUINFO_KEY", JSON.stringify(this.skuInfo));
+
+        //因为成功页面需要商品数量，所以通过路由传参
+        this.$router.push("/addcartsuccess?skuNum=" + this.skuNum);
+      } catch (error) {
+        alert(error.message);
+      }
     },
   },
   computed: {
