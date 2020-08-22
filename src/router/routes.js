@@ -3,10 +3,17 @@ import Search from "@/pages/Search";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Detail from "@/pages/Detail";
-import AddCartSuccess from "@/pages/AddCartSuccess"
+import AddCartSuccess from "@/pages/AddCartSuccess";
+import ShopCart from "@/pages/ShopCart";
 
 export default [
     //专门配置各种路由的地方，要区分路由和路由器
+    // 购物车结算页面
+    {
+        path: '/shopcart',
+        component: ShopCart
+    },
+
     // 添加购物车成功
     {
         path: '/addcartsuccess',
