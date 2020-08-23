@@ -1,7 +1,8 @@
 import {
     reqAddOrUpdateCart,
     reqShopCartList,
-    reqUpdateIsCheck
+    reqUpdateIsCheck,
+    reqDeleteCart
 } from "@/api";
 const state = {
     shopCartList: []
@@ -81,6 +82,33 @@ const actions = {
 
         return Promise.all(promises)
     },
+
+    // 购物车商品单个删除
+    async deleteCart({
+        commit
+    }, skuId) {
+        const result = await reqDeleteCart(skuId);
+        if (result.code === 200) {
+            return "ok"
+        } else {
+            return Promise.reject(new Error("failed"));
+        }
+    },
+
+    // 购物车选中商品全部删除
+    async deleteAllCheckCart({
+        commit,
+        state,
+        dispatch
+    }) {
+        let promises = []
+        state.shopCartList.forEach(item => {
+            if (item.isChecked === 0) return
+            let promise = dispatch('deleteCart', item.skuId)
+            promises.push(promise)
+        })
+        return Promise.all(promises)
+    }
 }
 const getters = {}
 export default {

@@ -43,7 +43,7 @@
             <span class="sum">{{cart.skuNum * cart.skuPrice}}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="#none" class="sindelet" @click="deleteOne(cart)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -56,7 +56,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="#none" @click="deleteAll">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -117,6 +117,26 @@ export default {
         this.getShopCartList();
       } catch (error) {
         alert("error.message");
+      }
+    },
+
+    // 购物车商品单个删除
+    async deleteOne(cart) {
+      try {
+        await this.$store.dispatch("deleteCart", cart.skuId);
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+
+    // 购物车商品多个删除
+    async deleteAll() {
+      try {
+        await this.$store.dispatch("deleteAllCheckCart");
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
       }
     },
   },
