@@ -4,6 +4,7 @@
  * 思路： 1.配置基础路径和时间超时
  *        2. 添加进度条信息 nprogress
  *        3. 返回的响应不再需要从data属性当中拿数据，而是响应就是我们要的数据
+ *        4. 统一处理请求错误，具体请求也可以选择处理或不处理
  * */
 
 // 一般我们在二次封装axios的时候不会直接在axios上改动
@@ -14,6 +15,7 @@ import axios from "axios";
 import NProgress from "nprogress";
 // 使用nprogress 需要引入js和css文件，也可以在main.js引入
 import 'nprogress/nprogress.css';
+import store from '@/store';
 
 // 1. 创建一个新的 axios 实例
 const instance = axios.create({
@@ -27,6 +29,11 @@ const instance = axios.create({
 // 请求拦截器当中添加打开进度条的功能
 // 请求拦截器中失败的回调函数不用处理
 instance.interceptors.request.use(config => {
+    // 使用临时身份标识
+    // 处理 config（请求报文）
+    // 把用户得临时身份标识添加到每次请求得请求头当中
+    let userTempId = store.state.user.userTempId
+    config.headers.userTempId = userTempId;
     // 2.  添加额外的功能（使用进度条）
     //     处理config（请求报文）
     NProgress.start();

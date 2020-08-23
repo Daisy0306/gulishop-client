@@ -14,7 +14,7 @@ export const reqCategoryList = () => {
 }
 //reqCategoryList(); // 测试发送请求的时候，通过nprogress 设置在上方的进度条是否可以正常显示
 
-// 发送本地请求的接口数据
+// 发送本地请求的接口数据,banner 和 floor
 export const reqBannerList = () => {
     return mockAjax({
         url: "/banner",
@@ -48,7 +48,7 @@ export const reqGoodsDetailInfo = (skuId) => {
     })
 }
 
-// 请求购物车列表数据
+// 请求添加到购物车（或者修改购物车数量）
 // /api/cart/addToCart/{ skuId }/{ skuNum }   POST 
 // 参数：① skuID 商品ID；  ② skuNum 商品数量
 export const reqAddOrUpdateCart = (skuId, skuNum) => {
@@ -60,3 +60,13 @@ export const reqAddOrUpdateCart = (skuId, skuNum) => {
         method: 'POST'
     })
 }
+
+// 请求购物车列表数据
+// /api/cart/cartList   get
+export const reqShopCartList = () => {
+    return Ajax({
+        url: '/cart/cartList',
+        method: "get"
+    })
+}
+// 对象写法：export const reqShopCartList = () => Ajax.get('/cart/cartList')
