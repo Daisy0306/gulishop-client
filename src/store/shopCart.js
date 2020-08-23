@@ -1,6 +1,7 @@
 import {
     reqAddOrUpdateCart,
-    reqShopCartList
+    reqShopCartList,
+    reqUpdateIsCheck
 } from "@/api";
 const state = {
     shopCartList: []
@@ -38,6 +39,21 @@ const actions = {
             commit('RECEIVESHOPCARTLIST', result.data)
         }
     },
+
+    // 购物车商品选中状态
+    async reqUpdateIsCheck({
+        commit
+    }, {
+        skuId,
+        isChecked
+    }) {
+        const result = await reqUpdateIsCheck(skuId, isChecked);
+        if (result.code === 200) {
+            return "ok"
+        } else {
+            return Promise.reject(new Error('failed'));
+        }
+    }
 }
 const getters = {}
 export default {

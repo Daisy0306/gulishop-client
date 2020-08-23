@@ -23,9 +23,16 @@
             <span class="price">{{cart.skuPrice}}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" minnum="1" class="itxt" :value="cart.skuNum" />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="mins" @click="updateCartNum(cart,-1)">-</a>
+            <input
+              autocomplete="off"
+              type="text"
+              minnum="1"
+              class="itxt"
+              :value="cart.skuNum"
+              @change="updateCartNum(cart,$event.target.value*1)"
+            />
+            <a href="javascript:void(0)" class="plus" @click="updateCartNum(cart,1)">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{cart.skuNum * cart.skuPrice}}</span>
@@ -75,6 +82,21 @@ export default {
   methods: {
     getShopCartList() {
       this.$store.dispatch("getShopCartList");
+    },
+    async updateCartNum(cart, disNum) {
+      if (cart.skuNum + disNum < 1) {
+        // disNum 和原来的数量加起来最少得是1，如果小于1得对 disNum 进行修正
+        disNum = 1 - cart.skuNum;
+      }
+      try {
+        await this.$store.dispatch("addOrUpdateCart", {
+          skuId: cart.skuId,
+          skuNum: disNum,
+        });
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
+      }
     },
   },
   computed: {

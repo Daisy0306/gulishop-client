@@ -70,3 +70,13 @@ export const reqShopCartList = () => {
     })
 }
 // 对象写法：export const reqShopCartList = () => Ajax.get('/cart/cartList')
+
+// 切换商品选中状态
+// /api/cart/checkCart/{skuID}/{isChecked}  get  
+// isChecked 0代表取消选中  1代表选中
+export const reqUpdateIsCheck = (skuId, isChecked) => {
+    return Ajax({
+        url: `/cart/checkCart/${skuID}/${isChecked}`,
+        method: "get"
+    })
+}
