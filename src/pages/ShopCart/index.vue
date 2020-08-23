@@ -13,7 +13,12 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="cart in shopCartList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" />
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="cart.isChecked === 1"
+              @click="updateOne(cart)"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl" />
@@ -47,7 +52,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" />
+        <input class="chooseAll" type="checkbox" v-model="isCheckAll" />
         <span>全选</span>
       </div>
       <div class="option">
@@ -83,6 +88,7 @@ export default {
     getShopCartList() {
       this.$store.dispatch("getShopCartList");
     },
+    // 修改购物车商品数量
     async updateCartNum(cart, disNum) {
       if (cart.skuNum + disNum < 1) {
         // disNum 和原来的数量加起来最少得是1，如果小于1得对 disNum 进行修正
@@ -98,11 +104,47 @@ export default {
         alert(error.message);
       }
     },
+
+    // 修改购物车商品单个结算状态
+    async updateOne(cart) {
+      // 发请求
+      try {
+        await this.$store.dispatch("updateIsCheck", {
+          skuId: cart.skuId,
+          isChecked: cart.isChecked === 1 ? 0 : 1,
+        });
+        // 结果成功去重新请求列表页数据
+        this.getShopCartList();
+      } catch (error) {
+        alert("error.message");
+      }
+    },
   },
   computed: {
     ...mapState({
       shopCartList: (state) => state.shopCart.shopCartList,
     }),
+    isCheckAll: {
+      get() {
+        return (
+          this.shopCartList.every((item) => item.isChecked === 1) &&
+          this.shopCartList.length > 0
+        );
+      },
+      async set(val) {
+        //我们要让所有的人都去修改状态val对应的状态 val如果是true ===》 1   如果是false ===> 0
+        try {
+          const result = await this.$store.dispatch(
+            "updateAllIsCheck",
+            val ? 1 : 0
+          );
+          //console.log(result);
+          this.getShopCartList();
+        } catch (error) {
+          alert(error.message);
+        }
+      },
+    },
   },
 };
 </script>
