@@ -5,7 +5,8 @@ import {
     getUserTempId,
 } from '@/utils/userabout'
 import {
-    reqRegister
+    reqRegister,
+    reqLogin
 } from "@/api";
 const state = {
     // 用户的临时身份标识 userTempId，我们在 state 中存储一份
@@ -13,8 +14,13 @@ const state = {
     // 用户的身份标识是要存储在永久保存的地方（localStorage），并且尽量不要更改
     // 先去 localStorage 内部去取，有就用，没有就得创建，可以使用函数
     userTempId: getUserTempId(),
+    userInfo: JSON.parse(localStorage.getItem('USERINFO_KEY')) || {}
 }
-const mutations = {}
+const mutations = {
+    RECEIVEUSERINFO(state, userInfo) {
+        state.userInfo = userInfo
+    }
+}
 const actions = {
     async register({
         commit
@@ -24,6 +30,18 @@ const actions = {
             return "ok"
         } else {
             return Promise.reject(new Error('failed'));
+        }
+    },
+    async login({
+        commit
+    }, userInfo) {
+        const result = await reqLogin(userInfo);
+        if (result.code === 200) {
+            commit('RECEIVEUSERINFO', result.data)
+            localStorage.setItem('USERINFO_KEY', JSON.stringify(result.data))
+            return "ok"
+        } else {
+            return Promise.reject(new Error("failed"))
         }
     }
 }

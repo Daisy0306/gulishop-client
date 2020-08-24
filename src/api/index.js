@@ -100,3 +100,14 @@ export const reqRegister = (userInfo) => {
         data: userInfo // userInfo就是对象{mobile,code,password}
     })
 }
+
+// 创建请求登录的接口请求函数
+// /api/user/passport/login  POST
+// mobile 用户名   password 密码
+export const reqLogin = (userInfo) => {
+    return Ajax({
+        url: "/user/passport/login",
+        method: "POST",
+        data: userInfo
+    })
+}
