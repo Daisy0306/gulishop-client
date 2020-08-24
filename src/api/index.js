@@ -89,3 +89,14 @@ export const reqDeleteCart = (skuId) => {
         method: "delete"
     })
 }
+
+// 创建请求注册接口请求函数
+// /api/user/passport/register  POST
+// mobile手机号   password密码   code验证码
+export const reqRegister = (userInfo) => {
+    return Ajax({
+        url: "/user/passport/register",
+        method: "post",
+        data: userInfo // userInfo就是对象{mobile,code,password}
+    })
+}

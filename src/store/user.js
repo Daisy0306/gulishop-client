@@ -2,8 +2,11 @@
 //     getUserTempId
 // } from "@/utils/userabout";
 import {
-    getUserTempId
+    getUserTempId,
 } from '@/utils/userabout'
+import {
+    reqRegister
+} from "@/api";
 const state = {
     // 用户的临时身份标识 userTempId，我们在 state 中存储一份
     // 为了以后获取的时候，效率更高一些
@@ -12,7 +15,18 @@ const state = {
     userTempId: getUserTempId(),
 }
 const mutations = {}
-const actions = {}
+const actions = {
+    async register({
+        commit
+    }, userInfo) {
+        const result = await reqRegister(userInfo);
+        if (result.code === 200) {
+            return "ok"
+        } else {
+            return Promise.reject(new Error('failed'));
+        }
+    }
+}
 const getters = {}
 
 export default {
