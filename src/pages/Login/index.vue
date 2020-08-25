@@ -84,6 +84,7 @@ export default {
   methods: {
     async login() {
       let { mobile, password } = this;
+      // 初步验证
       if (mobile && password) {
         try {
           await this.$store.dispatch("login", { mobile, password });

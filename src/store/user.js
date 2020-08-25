@@ -15,6 +15,7 @@ const state = {
     // 先去 localStorage 内部去取，有就用，没有就得创建，可以使用函数
     userTempId: getUserTempId(),
     userInfo: JSON.parse(localStorage.getItem('USERINFO_KEY')) || {}
+    //userInfo: {}
 }
 const mutations = {
     RECEIVEUSERINFO(state, userInfo) {
