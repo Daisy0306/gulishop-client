@@ -6,7 +6,8 @@ import {
 } from '@/utils/userabout'
 import {
     reqRegister,
-    reqLogin
+    reqLogin,
+    reqLogout
 } from "@/api";
 const state = {
     // 用户的临时身份标识 userTempId，我们在 state 中存储一份
@@ -20,9 +21,13 @@ const state = {
 const mutations = {
     RECEIVEUSERINFO(state, userInfo) {
         state.userInfo = userInfo
+    },
+    RESETUSERINFO(state) {
+        state.userInfo = {}
     }
 }
 const actions = {
+    // 注册
     async register({
         commit
     }, userInfo) {
@@ -33,6 +38,7 @@ const actions = {
             return Promise.reject(new Error('failed'));
         }
     },
+    // 登录
     async login({
         commit
     }, userInfo) {
@@ -43,6 +49,21 @@ const actions = {
             return "ok"
         } else {
             return Promise.reject(new Error("failed"))
+        }
+    },
+    // 退出登录
+    async logout({
+        commit
+    }) {
+        const result = await reqLogout();
+        if (result.code === 200) {
+            // 清空 localStorage 当中的用户数据
+            // 清空 state 中的 userInfo 数据
+            localStorage.removeItem('USERINFO_KEY')
+            commit('RESETUSERINFO')
+            return "ok"
+        } else {
+            return Promise.reject(new Error('failed'))
         }
     }
 }

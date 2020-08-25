@@ -80,6 +80,15 @@ export default {
     clearKeyword() {
       this.keyword = "";
     },
+    async logout() {
+      try {
+        await this.$store.dispatch("logout");
+        alert("退出登录成功，自动跳转到首页");
+        this.$router.push("/");
+      } catch (error) {
+        alert(error.message);
+      }
+    },
   },
   mounted() {
     this.$bus.$on("clearKeyword", this.clearKeyword);

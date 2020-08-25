@@ -111,3 +111,12 @@ export const reqLogin = (userInfo) => {
         data: userInfo
     })
 }
+
+// 退出登录接口请求函数
+// /api/user/passport/logout    GET  无参数
+export const reqLogout = () => {
+    return Ajax({
+        url: "/user/passport/logout",
+        method: "GET"
+    })
+}
