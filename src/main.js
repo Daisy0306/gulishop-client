@@ -12,6 +12,16 @@ import "swiper/css/swiper.min.css";
 // 引入模拟接口数据 mock
 import "@/mock/mockServer";
 
+// 部分引入 element-ui当中的 MessageBox,Message
+import {
+  Message,
+  MessageBox
+} from "element-ui";
+// 声明使用或者注册
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$message = Message;
+
 // import "@/api"; // 为了测试用的
 
 Vue.config.productionTip = false;

@@ -136,7 +136,7 @@ export default {
     this.getPayInfo();
   },
   methods: {
-    // 发送请求
+    // 直接在组件中发送请求
     async getPayInfo() {
       const result = await this.$API.reqPayInfo(this.$route.query.orderNo);
       if (result.code === 200) {
