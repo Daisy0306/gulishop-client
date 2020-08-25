@@ -91,7 +91,8 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <!-- <router-link class="subBtn" to="/pay">提交订单</router-link> -->
+      <a href="javascript:;" class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -115,6 +116,26 @@ export default {
     changeDefault(address) {
       this.userAddressList.forEach((item) => (item.isDefault = "0"));
       address.isDefault = "1";
+    },
+    async submitOrder() {
+      let tradeNo = this.tradeInfo.tradeNo;
+      let tradeInfo = {
+        //参考api文档示例进行补充
+        consignee: this.defaultAddress.consignee, //用户名
+        consigneeTel: this.defaultAddress.phoneNum, //用户联系电话
+        deliveryAddress: this.defaultAddress.userAddress, //用户地址
+        paymentWay: "ONLINE", //支付方式
+        orderComment: this.message, //用户的留言
+        orderDetailList: this.detailArrayList, //交易信息当中的商品详情
+      };
+      const result = await this.$API.reqSubmitOrder(tradeNo, tradeInfo);
+      // 不通过 Vuex发请求，直接在组件发请求
+      if (result.code === 200) {
+        alert("订单创建成功，跳转到支付页面~");
+        this.$router.push("/pay?orderNo=" + result.data);
+      } else {
+        alert("订单创建失败~");
+      }
     },
   },
   computed: {

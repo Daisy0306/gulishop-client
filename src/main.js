@@ -6,12 +6,13 @@ import TopNav from "@/components/TopNav";
 import SliderLoop from "@/components/SliderLoop";
 import Pagination from "@/components/Pagination";
 import store from "@/store";
+import * as API from "@/api";
 
 import "swiper/css/swiper.min.css";
 // 引入模拟接口数据 mock
 import "@/mock/mockServer";
 
-import "@/api"; // 为了测试用的
+// import "@/api"; // 为了测试用的
 
 Vue.config.productionTip = false;
 // 注册全局组件
@@ -24,6 +25,7 @@ new Vue({
   el: "#app",
   beforeCreate() {
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   },
   render: (h) => h(App),
   store

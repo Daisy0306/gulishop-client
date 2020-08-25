@@ -129,3 +129,13 @@ export const reqTradeInfo = () => {
         method: "GET"
     })
 }
+
+// 请求创建订单接口请求函数：
+///api/order/auth/submitOrder?tradeNo={tradeNo}  post
+export const reqSubmitOrder = (tradeNo, tradeInfo) => {
+    return Ajax({
+        url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+        method: 'post',
+        data: tradeInfo
+    })
+}

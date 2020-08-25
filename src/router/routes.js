@@ -6,9 +6,15 @@ import Detail from "@/pages/Detail";
 import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
+import Pay from "@/pages/Pay";
 
 export default [
     //专门配置各种路由的地方，要区分路由和路由器
+    //支付页面
+    {
+        path: "/pay",
+        component: Pay
+    },
     // 订单交易页面
     {
         path: "/trade",
