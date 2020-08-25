@@ -67,10 +67,11 @@
         </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{allMoney}}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <!-- <a class="sum-btn" href="###" target="_blank">结算</a> -->
+          <router-link to="/trade" class="sum-btn">结算</router-link>
         </div>
       </div>
     </div>
@@ -164,6 +165,14 @@ export default {
           alert(error.message);
         }
       },
+    },
+    allMoney() {
+      return this.shopCartList.reduce((pre, item) => {
+        if (item.isChecked === 1) {
+          pre += item.skuNum * item.skuPrice;
+        }
+        return pre;
+      }, 0);
     },
   },
 };

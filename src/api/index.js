@@ -120,3 +120,12 @@ export const reqLogout = () => {
         method: "GET"
     })
 }
+
+// 请求订单交易页面接口请求函数
+// /api/order/auth/trade   GET   无参数
+export const reqTradeInfo = () => {
+    return Ajax({
+        url: '/order/auth/trade',
+        method: "GET"
+    })
+}
