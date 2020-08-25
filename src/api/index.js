@@ -139,3 +139,13 @@ export const reqSubmitOrder = (tradeNo, tradeInfo) => {
         data: tradeInfo
     })
 }
+
+// 获取订单支付页面的接口请求函数
+// /api/payment/weixin/createNative/{orderId}  get
+//  orderId  支付订单ID (通过提交订单得到)
+export const reqPayInfo = (orderId) => {
+    return Ajax({
+        url: `/payment/weixin/createNative/${orderId}`,
+        method: "get"
+    })
+}
