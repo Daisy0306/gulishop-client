@@ -3,7 +3,12 @@
     <h3 class="title">填写并核对订单信息</h3>
     <div class="content">
       <h5 class="receive">收件人信息</h5>
-      <div class="address clearFix" v-for="(address,index) in userAddressList" :key="address.id">
+      <div
+        class="address clearFix"
+        v-for="address in userAddressList"
+        :key="address.id"
+        @click="changeDefault(address)"
+      >
         <span class="username" :class="{selected:address.isDefault === '1'}">{{address.consignee}}</span>
         <p>
           <span class="s1">{{address.userAddress}}</span>
@@ -28,7 +33,7 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix" v-for="(goods,index) in detailArrayList" :key="goods.skuId">
+        <ul class="list clearFix" v-for="goods in detailArrayList" :key="goods.skuId">
           <li>
             <img :src="goods.imgUrl" alt style="width:100px" />
           </li>
@@ -106,6 +111,10 @@ export default {
   methods: {
     getTradeInfo() {
       this.$store.dispatch("getTradeInfo");
+    },
+    changeDefault(address) {
+      this.userAddressList.forEach((item) => (item.isDefault = "0"));
+      address.isDefault = "1";
     },
   },
   computed: {
