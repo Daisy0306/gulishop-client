@@ -215,6 +215,30 @@
 <script>
 export default {
   name: "MyOrder",
+  data() {
+    return {
+      //设置默认值
+      page: 1,
+      limit: 3,
+      MyOrderInfo: {},
+    };
+  },
+  mounted() {
+    this.getMyOrderInfo();
+  },
+  methods: {
+    async getMyOrderInfo() {
+      const result = await this.$API.reqMyOrderInfo(this.page, this.limit);
+      if (result.code === 200) {
+        this.MyOrderInfo = result.data;
+      }
+    },
+  },
+  computed: {
+    MyOrderList() {
+      return this.MyOrderInfo.records || [];
+    },
+  },
 };
 </script>
 
