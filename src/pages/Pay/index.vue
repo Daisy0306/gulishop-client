@@ -14,7 +14,7 @@
           </span>
           <span class="fr">
             <em class="lead">应付金额：</em>
-            <em class="orange money">￥17,654</em>
+            <em class="orange money">￥{{payInfo.totalFee}}</em>
           </span>
         </div>
       </div>
@@ -105,7 +105,8 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <!-- <router-link class="btn" to="/paysuccess">立即支付</router-link> -->
+          <a href="javascript:;" class="btn" @click="pay">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -124,6 +125,7 @@
 </template>
 
 <script>
+import QRCode from "qrcode";
 export default {
   name: "Pay",
   data() {
@@ -141,6 +143,57 @@ export default {
       const result = await this.$API.reqPayInfo(this.$route.query.orderNo);
       if (result.code === 200) {
         this.payInfo = result.data;
+      }
+    },
+
+    // 点击支付
+    async pay() {
+      try {
+        // 1.生成二维码
+        const imgUrl = await QRCode.toDataURL(this.payInfo.codeUrl);
+        console.log(imgUrl);
+
+        // 2.弹出一个消息框去展示二维码图片
+        this.$alert(`<img src="${imgUrl}"/>`, "请使用微信扫码支付", {
+          dangerouslyUseHTMLString: true,
+          showClose: false,
+          showCancelButton: true,
+          cancelButtonText: "支付遇到问题",
+          confirmButtonText: "我已成功支付",
+          center: true,
+          // 4. 点击按钮之后的处理及第三步产生联系
+          beforeClose: (action, instance, done) => {
+            if (action === "confirm") {
+              // 测试环境
+              clearInterval(this.timer);
+              this.timer = null;
+              done();
+              this.$router.push("/paysuccess");
+            } else if (action === "cancel") {
+              this.$message.warning("请联系尚硅谷官网~");
+              clearInterval(this.timer);
+              this.timer = null;
+              done();
+            }
+          },
+        });
+        // 先进行判断，看定时器是否存在，保证一个页面只会出现一个定时器
+        if (!this.timer) {
+          // 3. 弹出消息框的同时，循环向后台发请求，获取该订单支付状态数据
+          // 根据返回来的支付状态数据，去决定要不要跳转到支付成功页面
+          this.timer = setInterval(async () => {
+            const result = await this.$API.reqOrderStatus(this.payInfo.orderId);
+            if (result.code === 200) {
+              this.status = 200; //存一下状态码
+              clearInterval(this.timer);
+              this.timer = null;
+              this.$msgbox.close();
+              this.$router.push("/paysuccess");
+            }
+          }, 2000);
+        }
+      } catch (error) {
+        this.$message.error("生成二维码失败" + error.message);
       }
     },
   },

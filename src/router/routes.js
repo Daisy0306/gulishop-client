@@ -7,9 +7,30 @@ import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
+import Center from "@/pages/Center";
+import GroupOrder from "@/pages/Center/GroupOrder";
+import MyOrder from "@/pages/Center/MyOrder"
 
 export default [
     //专门配置各种路由的地方，要区分路由和路由器
+    // 用户中心
+    {
+        path: '/center',
+        component: Center,
+        children: [{
+                path: 'myorder',
+                component: MyOrder
+            },
+            {
+                path: 'grouporder',
+                component: GroupOrder
+            },
+            {
+                path: '',
+                redirect: 'myorder'
+            }
+        ]
+    },
     //支付页面
     {
         path: "/pay",

@@ -63,7 +63,7 @@
       <div class="money-box">
         <div class="chosed">
           已选择
-          <span>0</span>件商品
+          <span>{{checkNum}}</span>件商品
         </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
@@ -165,6 +165,14 @@ export default {
           alert(error.message);
         }
       },
+    },
+    checkNum() {
+      return this.shopCartList.reduce((pre, item) => {
+        if (item.isChecked === 1) {
+          pre += item.skuNum;
+        }
+        return pre;
+      }, 0);
     },
     allMoney() {
       return this.shopCartList.reduce((pre, item) => {
